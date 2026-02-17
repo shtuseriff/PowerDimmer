@@ -39,6 +39,10 @@ namespace PowerDimmer
                         .SetChecked(settings.DimTaskbar)
                         .AddHandler((b) => settings.DimTaskbar = b))
                     .AddToggle(option => option
+                        .SetText("Undim on desktop click?")
+                        .SetChecked(settings.UndimOnDesktop)
+                        .AddHandler((b) => settings.UndimOnDesktop = b))
+                    .AddToggle(option => option
                         .SetText("Active on launch?")
                         .SetChecked(settings.ActiveOnLaunch)
                         .AddHandler((b) => settings.ActiveOnLaunch = b))

@@ -171,6 +171,16 @@ namespace PowerDimmer
             return pid;
         }
 
+        public static bool IsDesktopWindow(IntPtr window)
+        {
+            if (window == GetDesktopWindow() || window == GetShellWindow())
+                return true;
+            var className = new StringBuilder(256);
+            GetClassName(window, className, className.Capacity);
+            var name = className.ToString();
+            return name == "Progman" || name == "WorkerW";
+        }
+
         public static Win32.RECT GetWindowRectangle(IntPtr hWnd)
         {
             Win32.DwmGetWindowAttribute(hWnd,

@@ -14,6 +14,7 @@ namespace PowerDimmer
     public partial class App : Application
     {
         private IntPtr curFgHwnd;
+        private bool dimmingPaused;
         private ISettings settings;
         private List<DimWindow> dimWindows { get; } = new();
         private List<WindowShade> shadeWindows { get; } = new();
@@ -180,10 +181,17 @@ namespace PowerDimmer
                 if (Win32.IsStandardWindow(hwnd) && Win32.HasNoVisibleOwner(hwnd))
                 {
                     curFgHwnd = hwnd;
-                    if (settings.DimmingEnabled)
+                    if (dimmingPaused)
                     {
-                        UpdateDimming(hwnd);
+                        dimmingPaused = false;
+                        dimWindows.ForEach(w => w.Show());
                     }
+                    UpdateDimming(hwnd);
+                }
+                else if (settings.UndimOnDesktop && Win32.IsDesktopWindow(hwnd))
+                {
+                    dimmingPaused = true;
+                    dimWindows.ForEach(w => w.Hide());
                 }
             }
             if (settings.WindowShadeEnabled)
@@ -304,6 +312,9 @@ namespace PowerDimmer
 
         [Option(Alias = "dimTaskbar", DefaultValue = true)]
         bool DimTaskbar { get; set; }
+
+        [Option(Alias = "undimOnDesktop", DefaultValue = false)]
+        bool UndimOnDesktop { get; set; }
 
         [Option(Alias = "brightness", DefaultValue = 50)]
         int Brightness { get; set; }
