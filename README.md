@@ -1,8 +1,14 @@
-# PowerDimmer
-
-[![Main workflow](https://github.com/shayne/PowerDimmer/actions/workflows/workflow.yml/badge.svg)](https://github.com/shayne/PowerDimmer/releases/tag/main)
+# PowerDimmer (Fork)
 
 A simple distraction dimmer for Windows
+
+> **About this fork:** This is a fork of [shayne/PowerDimmer](https://github.com/shayne/PowerDimmer). The original had a bug where dimming didn't work on external monitors in mixed-DPI setups ([issue #4](https://github.com/shayne/PowerDimmer/issues/4)), and I wanted a couple of extra features. No commits have been made to the original repo in 2+ years, so I fixed and extended it (and by that I mean Claude fixed and extended it :-). Just did this for personal use. Not tested on any PCs except my own and haven't checked if the changes affect resource usage compared to the original, so YMMV.
+>
+> **Changes from the original:**
+> - Fixed multi-monitor dimming on mixed-DPI setups (uses Win32 pixel coordinates instead of WPF DIPs)
+> - Added "Undim on desktop click" option — click the desktop wallpaper to temporarily remove all dimming
+> - Added "Dim all monitors?" toggle — optionally limit dimming to the primary monitor only
+> - Upgraded from .NET 6 to .NET 8 (LTS)
 
 | [<img src="https://user-images.githubusercontent.com/79330/147771591-853256ae-f4f1-42d3-8c68-ea467febeb58.png" width="800" />](https://user-images.githubusercontent.com/79330/147771591-853256ae-f4f1-42d3-8c68-ea467febeb58.png) |
 | :--: |
@@ -26,7 +32,7 @@ New features
 
 ## Building
 
-Just install the [.NET 6.0 SDK](https://dotnet.microsoft.com/en-us/download) and then `dotnet run` 
+Just install the [.NET 8.0 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/8.0) and then `dotnet run`
 
 ## Context
 
