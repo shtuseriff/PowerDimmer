@@ -43,6 +43,10 @@ namespace PowerDimmer
                         .SetChecked(settings.UndimOnDesktop)
                         .AddHandler((b) => settings.UndimOnDesktop = b))
                     .AddToggle(option => option
+                        .SetText("Dim all monitors?")
+                        .SetChecked(settings.MultiMonitorDimming)
+                        .AddHandler((b) => settings.MultiMonitorDimming = b))
+                    .AddToggle(option => option
                         .SetText("Active on launch?")
                         .SetChecked(settings.ActiveOnLaunch)
                         .AddHandler((b) => settings.ActiveOnLaunch = b))

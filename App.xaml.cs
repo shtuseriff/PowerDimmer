@@ -45,6 +45,14 @@ namespace PowerDimmer
                         dimOff();
                     }
                 }
+                else if (e.PropertyName == nameof(settings.MultiMonitorDimming))
+                {
+                    if (settings.DimmingEnabled)
+                    {
+                        dimOff();
+                        dimOn(curFgHwnd);
+                    }
+                }
             };
         }
 
@@ -150,7 +158,10 @@ namespace PowerDimmer
         private void dimOn(IntPtr fgHwnd)//creates a dim window on each screen
         {
             var opacity = brightnessToOpacity(settings.Brightness);
-            foreach (var screen in System.Windows.Forms.Screen.AllScreens)
+            var screens = settings.MultiMonitorDimming
+                ? System.Windows.Forms.Screen.AllScreens
+                : new[] { System.Windows.Forms.Screen.PrimaryScreen! };
+            foreach (var screen in screens)
             {
                 var win = new DimWindow(settings, screen.Bounds)
                 {
@@ -315,6 +326,9 @@ namespace PowerDimmer
 
         [Option(Alias = "undimOnDesktop", DefaultValue = false)]
         bool UndimOnDesktop { get; set; }
+
+        [Option(Alias = "multiMonitorDimming", DefaultValue = true)]
+        bool MultiMonitorDimming { get; set; }
 
         [Option(Alias = "brightness", DefaultValue = 50)]
         int Brightness { get; set; }
