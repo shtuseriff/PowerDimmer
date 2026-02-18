@@ -151,10 +151,8 @@ namespace PowerDimmer
             var opacity = brightnessToOpacity(settings.Brightness);
             foreach (var screen in System.Windows.Forms.Screen.AllScreens)
             {
-                var win = new DimWindow(settings)
+                var win = new DimWindow(settings, screen.Bounds)
                 {
-                    Left = screen.Bounds.Left,
-                    Top = screen.Bounds.Top,
                     Opacity = opacity
                 };
                 win.Show();
