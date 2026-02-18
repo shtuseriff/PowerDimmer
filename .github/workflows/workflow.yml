@@ -15,8 +15,9 @@ jobs:
         with:
           dotnet-version: "8.0.x"
       - run: |
-          dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o publish
-          7z a -tzip "PowerDimmer.zip" "./publish/PowerDimmer.exe"
+          dotnet publish -c Release -r win-x64 --self-contained true -o PowerDimmer
+          7z a -tzip "PowerDimmer.zip" "./PowerDimmer/*"
+          rm -r "PowerDimmer"
       - uses: richardsimko/update-tag@v1
         with:
           tag_name: latest
@@ -26,7 +27,7 @@ jobs:
         with:
           tag_name: latest
           name: Latest Build
-          body: Self-contained single-file build. No .NET installation required.
+          body: Self-contained build. No .NET installation required — just extract and run PowerDimmer.exe.
           prerelease: true
           files: "PowerDimmer.zip"
         env:
