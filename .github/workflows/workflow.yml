@@ -1,4 +1,4 @@
-name: Latest main build
+name: Build and Release
 on:
   push:
     branches:
@@ -9,23 +9,24 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-dotnet@v1
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: "6.0.x"
+          dotnet-version: "8.0.x"
       - run: |
-          dotnet publish -o PowerDimmer
-          7z a -tzip "PowerDimmer.zip" "./PowerDimmer/*"
-          rm -r "PowerDimmer"
+          dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o publish
+          7z a -tzip "PowerDimmer.zip" "./publish/PowerDimmer.exe"
       - uses: richardsimko/update-tag@v1
         with:
-          tag_name: ${{ github.ref_name }}
+          tag_name: latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - uses: softprops/action-gh-release@v1
+      - uses: softprops/action-gh-release@v2
         with:
+          tag_name: latest
+          name: Latest Build
+          body: Self-contained single-file build. No .NET installation required.
           prerelease: true
-          tag_name: ${{ github.ref_name }}
           files: "PowerDimmer.zip"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
