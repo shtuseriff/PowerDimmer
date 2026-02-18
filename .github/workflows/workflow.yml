@@ -15,9 +15,12 @@ jobs:
         with:
           dotnet-version: "8.0.x"
       - run: |
-          dotnet publish -c Release -r win-x64 --self-contained true -o PowerDimmer
-          7z a -tzip "PowerDimmer.zip" "./PowerDimmer/*"
-          rm -r "PowerDimmer"
+          dotnet publish -c Release -r win-x64 --self-contained true -o portable
+          7z a -tzip "PowerDimmer-portable.zip" "./portable/*"
+          rm -r "portable"
+          dotnet publish -c Release -o lightweight
+          7z a -tzip "PowerDimmer-requires-dotnet8.zip" "./lightweight/*"
+          rm -r "lightweight"
       - uses: richardsimko/update-tag@v1
         with:
           tag_name: latest
@@ -27,8 +30,12 @@ jobs:
         with:
           tag_name: latest
           name: Latest Build
-          body: Self-contained build. No .NET installation required — just extract and run PowerDimmer.exe.
+          body: |
+            **PowerDimmer-portable.zip** — Self-contained, no .NET required. Just extract and run.
+            **PowerDimmer-requires-dotnet8.zip** — Smaller download, requires [.NET 8 Desktop Runtime](https://dotnet.microsoft.com/en-us/download/dotnet/8.0) installed.
           prerelease: true
-          files: "PowerDimmer.zip"
+          files: |
+            PowerDimmer-portable.zip
+            PowerDimmer-requires-dotnet8.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
